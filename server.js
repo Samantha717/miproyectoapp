@@ -5,7 +5,7 @@ const { sqliteDB } = require('./database');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Puerto dinámico para Railway
 
 // Configurar body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 // --- Mostrar formulario y usuarios ---
 app.get('/', (req, res) => {
   sqliteDB.all('SELECT * FROM usuarios', [], (err, rows) => {
-    if(err) {
+    if (err) {
       console.error('Error al leer usuarios:', err.message);
       rows = [];
     }
@@ -32,8 +32,8 @@ app.post('/add', (req, res) => {
   sqliteDB.run(
     `INSERT INTO usuarios (nombre, email, comentario) VALUES (?, ?, ?)`,
     [nombre, email, comentario],
-    function(err) {
-      if(err) console.error('Error al agregar usuario:', err.message);
+    function (err) {
+      if (err) console.error('Error al agregar usuario:', err.message);
       else console.log('Usuario agregado correctamente con ID:', this.lastID);
       res.redirect('/');
     }
@@ -48,8 +48,8 @@ app.post('/update/:id', (req, res) => {
   sqliteDB.run(
     `UPDATE usuarios SET nombre = ?, email = ?, comentario = ? WHERE id = ?`,
     [nombre, email, comentario, id],
-    function(err) {
-      if(err) console.error('Error al actualizar usuario:', err.message);
+    function (err) {
+      if (err) console.error('Error al actualizar usuario:', err.message);
       else console.log(`Usuario ID ${id} actualizado`);
       res.redirect('/');
     }
@@ -63,8 +63,8 @@ app.post('/delete/:id', (req, res) => {
   sqliteDB.run(
     `DELETE FROM usuarios WHERE id = ?`,
     [id],
-    function(err) {
-      if(err) console.error('Error al eliminar usuario:', err.message);
+    function (err) {
+      if (err) console.error('Error al eliminar usuario:', err.message);
       else console.log(`Usuario ID ${id} eliminado`);
       res.redirect('/');
     }
@@ -73,5 +73,5 @@ app.post('/delete/:id', (req, res) => {
 
 // --- Iniciar servidor ---
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en puerto ${PORT}`);
 });
