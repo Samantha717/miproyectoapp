@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CRUD Node.js</title>
+  <title>CRUD con SQLite</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
   </form>
 
   <h2>Usuarios Registrados</h2>
-  <table border="1">
+  <table>
     <tr>
       <th>ID</th>
       <th>Nombre</th>
@@ -27,8 +27,8 @@
     <tr>
       <form action="/update/<%= u.id %>" method="POST">
         <td><%= u.id %></td>
-        <td><input name="nombre" value="<%= u.nombre %>"></td>
-        <td><input name="email" value="<%= u.email %>"></td>
+        <td><input name="nombre" value="<%= u.nombre %>" required></td>
+        <td><input name="email" value="<%= u.email %>" required></td>
         <td><input name="comentario" value="<%= u.comentario %>"></td>
         <td>
           <button type="submit">Actualizar</button>
